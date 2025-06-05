@@ -2,9 +2,9 @@
 using StarWarsGeeks.Business.Models;
 
 namespace StarWarsGeeks.Database.Context;
-public class SwapiDbContext : DbContext
+public class StarWarsDbContext : DbContext
 {
-    public SwapiDbContext(DbContextOptions<SwapiDbContext> options) : base(options) { }
+    public StarWarsDbContext(DbContextOptions<StarWarsDbContext> options) : base(options) { }
 
     public DbSet<Person> People { get; set; } = null!;
     public DbSet<Planet> Planets { get; set; } = null!;
@@ -36,8 +36,5 @@ public class SwapiDbContext : DbContext
         _ = modelBuilder.Entity<Planet>().Property(p => p.Terrain).HasMaxLength(200);
         _ = modelBuilder.Entity<Planet>().Property(p => p.SurfaceWater).HasMaxLength(50);
         _ = modelBuilder.Entity<Planet>().Property(p => p.Population).HasMaxLength(50);
-
-
     }
-
 }

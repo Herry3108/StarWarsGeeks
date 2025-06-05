@@ -10,11 +10,13 @@ public class StarWarsController : ControllerBase
 {
     private readonly IPersonService _personService;
     private readonly IPlanetService _planetService;
+
     public StarWarsController(IPersonService personService, IPlanetService planetService)
     {
         _personService = personService;
         _planetService = planetService;
     }
+
     [HttpGet("people/{name}")]
     public async Task<IActionResult> GetPerson(string name)
     {

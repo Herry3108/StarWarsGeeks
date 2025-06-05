@@ -4,10 +4,10 @@ using StarWarsGeeks.Database.Context;
 namespace StarWarsGeeks.Database.Data;
 public class DatabaseInitializer
 {
-    private readonly SwapiTestDataService swapiTestDataService;
-    private readonly SwapiDbContext swapiDbContext;
+    private readonly StarWarsTestDataService swapiTestDataService;
+    private readonly StarWarsDbContext swapiDbContext;
 
-    public DatabaseInitializer(SwapiDbContext context, SwapiTestDataService swapiTestDataService)
+    public DatabaseInitializer(StarWarsDbContext context, StarWarsTestDataService swapiTestDataService)
     {
         swapiDbContext = context;
         this.swapiTestDataService = swapiTestDataService;

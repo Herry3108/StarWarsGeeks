@@ -2,11 +2,11 @@
 using StarWarsGeeks.Business.Models;
 
 namespace StarWarsGeeks.Database.Data;
-public class SwapiTestDataService
+public class StarWarsTestDataService
 {
     private readonly HttpClient httpClient;
 
-    public SwapiTestDataService(IHttpClientFactory httpClientFactory)
+    public StarWarsTestDataService(IHttpClientFactory httpClientFactory)
     {
         httpClient = httpClientFactory.CreateClient("StarWarsClient");
     }

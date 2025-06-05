@@ -6,20 +6,20 @@ using StarWarsGeeks.Database.Context;
 namespace StarWarsGeeks.Database;
 public class PlanetRepository : IPlanetRepository
 {
-    private readonly SwapiDbContext swapiDbContext;
+    private readonly StarWarsDbContext starWarsDbContext;
 
-    public PlanetRepository(SwapiDbContext swapiDbContext)
+    public PlanetRepository(StarWarsDbContext starWarsDbContext)
     {
-        this.swapiDbContext = swapiDbContext;
+        this.starWarsDbContext = starWarsDbContext;
     }
 
     public async Task<List<Planet>> GetAllPlanetsAsync()
     {
-        return await swapiDbContext.Planets.ToListAsync();
+        return await starWarsDbContext.Planets.ToListAsync();
     }
 
     public Task<Planet?> GetPlanetByName(string name)
     {
-        return swapiDbContext.Planets.FirstOrDefaultAsync(x => x.Name == name);
+        return starWarsDbContext.Planets.FirstOrDefaultAsync(x => x.Name == name);
     }
 }

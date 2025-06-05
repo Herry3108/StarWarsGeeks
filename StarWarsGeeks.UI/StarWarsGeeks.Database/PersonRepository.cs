@@ -6,20 +6,20 @@ using StarWarsGeeks.Database.Context;
 namespace StarWarsGeeks.Database;
 public class PersonRepository : IPersonRepository
 {
-    private readonly SwapiDbContext swapiDbContext;
+    private readonly StarWarsDbContext starWarsDbContext;
 
-    public PersonRepository(SwapiDbContext swapiDbContext)
+    public PersonRepository(StarWarsDbContext starWarsDbContext)
     {
-        this.swapiDbContext = swapiDbContext;
+        this.starWarsDbContext = starWarsDbContext;
     }
 
     public async Task<List<Person>> GetAllPeopleAsync()
     {
-        return await swapiDbContext.People.ToListAsync() ?? [];
+        return await starWarsDbContext.People.ToListAsync() ?? [];
     }
 
     public Task<Person?> GetPersonByName(string name)
     {
-        return swapiDbContext.People.FirstOrDefaultAsync(person => person.Name.Equals(name));
+        return starWarsDbContext.People.FirstOrDefaultAsync(person => person.Name.Equals(name));
     }
 }
