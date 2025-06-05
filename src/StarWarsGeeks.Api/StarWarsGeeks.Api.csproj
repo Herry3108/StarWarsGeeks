@@ -12,9 +12,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\StarWarsGeeks.UI\StarWarsGeeks.Business\StarWarsGeeks.Business.csproj" />
-    <ProjectReference Include="..\StarWarsGeeks.UI\StarWarsGeeks.Common\StarWarsGeeks.Common.csproj" />
-    <ProjectReference Include="..\StarWarsGeeks.UI\StarWarsGeeks.Database\StarWarsGeeks.Database.csproj" />
+    <ProjectReference Include="..\StarWarsGeeks.Business\StarWarsGeeks.Business.csproj" />
+    <ProjectReference Include="..\StarWarsGeeks.Common\StarWarsGeeks.Common.csproj" />
+    <ProjectReference Include="..\StarWarsGeeks.Database\StarWarsGeeks.Database.csproj" />
   </ItemGroup>
 
 </Project>
