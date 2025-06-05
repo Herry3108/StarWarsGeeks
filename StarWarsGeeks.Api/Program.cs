@@ -1,4 +1,4 @@
-var builder = WebApplication.CreateBuilder(args);
+WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
@@ -7,13 +7,25 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-var app = builder.Build();
+builder.Services.AddHttpClient("StarWarsClient",
+    client =>
+    {
+        client.BaseAddress = new Uri("https://swapi.info/api/");
+        client.DefaultRequestHeaders.Add("Accept", "application/json");
+    });
+
+builder.Services.AddBusinessServices();
+
+IConfiguration configuration = builder.Configuration;
+builder.Services.AddDatabaseRepositories(configuration);
+
+WebApplication app = builder.Build();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    _ = app.UseSwagger();
+    _ = app.UseSwaggerUI();
 }
 
 app.UseHttpsRedirection();
