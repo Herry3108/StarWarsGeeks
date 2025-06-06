@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StarWarsGeeks.Common", "Sta
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StarWarsGeeks.Api", "StarWarsGeeks.Api\StarWarsGeeks.Api.csproj", "{E2BF6F7F-31F2-5D1A-FA3F-4564590DB2CA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StarWarsGeeks.Tests", "StarWarsGeeks.Tests\StarWarsGeeks.Tests.csproj", "{BCE36A27-9AA2-4567-A9E1-C44E6759317F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{E2BF6F7F-31F2-5D1A-FA3F-4564590DB2CA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E2BF6F7F-31F2-5D1A-FA3F-4564590DB2CA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E2BF6F7F-31F2-5D1A-FA3F-4564590DB2CA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BCE36A27-9AA2-4567-A9E1-C44E6759317F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BCE36A27-9AA2-4567-A9E1-C44E6759317F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BCE36A27-9AA2-4567-A9E1-C44E6759317F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BCE36A27-9AA2-4567-A9E1-C44E6759317F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
