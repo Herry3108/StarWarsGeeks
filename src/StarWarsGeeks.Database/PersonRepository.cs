@@ -18,8 +18,18 @@ public class PersonRepository : IPersonRepository
         return await starWarsDbContext.People.ToListAsync() ?? [];
     }
 
-    public Task<Person?> GetPersonByName(string name)
+    public async Task<Person?> GetPersonByName(string name)
     {
-        return starWarsDbContext.People.FirstOrDefaultAsync(person => person.Name.Equals(name));
+        var result = await starWarsDbContext.People.FirstOrDefaultAsync(person => person.Name.Equals(name));
+
+        if (result is null)
+        {
+            return result;
+        }
+
+        result.TimesSearched = result.TimesSearched + 1;
+        await starWarsDbContext.SaveChangesAsync();
+
+        return result;
     }
 }

@@ -1,7 +1,430 @@
 ﻿@page "/"
 
+@using MudBlazor
+@using StarWarsGeeks.UI.Service
+@using StarWarsGeeks.UI.Service.Models
+@using Microsoft.AspNetCore.Components.Web
+
+@inject StarWarsService StarWarsService
+@inject ISnackbar Snackbar
+
 <PageTitle>Home</PageTitle>
 
-<h1>Hello, world!</h1>
+<MudContainer MaxWidth="MaxWidth.Large" Class="mt-8">
+    <MudText Typo="Typo.h3" Align="Align.Center" GutterBottom="true" Class="mb-8">
+        <MudIcon Icon="@Icons.Material.Filled.Search" Class="mr-3" />
+        Star Wars Universe Search
+    </MudText>
 
-Welcome to your new app.
+    <MudGrid>
+        <MudItem xs="12" md="6">
+            <MudCard Elevation="4" Class="pa-6">
+                <MudCardHeader>
+                    <CardHeaderContent>
+                        <div style="display: flex; align-items: center;">
+                            <MudIcon Icon="@Icons.Material.Filled.Person" Class="mr-3" Color="Color.Primary" />
+                            <MudText Typo="Typo.h6">Search People</MudText>
+                        </div>
+                    </CardHeaderContent>
+                </MudCardHeader>
+                <MudCardContent>
+                    <MudTextField @bind-Value="personSearchTerm"
+                                  @bind-Value:event="oninput"
+                                  Label="Enter person name"
+                                  Variant="Variant.Outlined"
+                                  Adornment="Adornment.End"
+                                  AdornmentIcon="@Icons.Material.Filled.Search"
+                                  OnAdornmentClick="SearchPerson"
+                                  OnKeyPress="@(async (KeyboardEventArgs e) => { if (e.Key == "Enter") await SearchPerson(); })"
+                                  FullWidth="true"
+                                  Class="mb-4" />
+
+                    <MudButton Variant="Variant.Filled"
+                               Color="Color.Primary"
+                               StartIcon="@Icons.Material.Filled.Search"
+                               OnClick="@SearchPerson"
+                               FullWidth="true">
+                        <MudText>Search Person</MudText>
+                    </MudButton>
+                </MudCardContent>
+            </MudCard>
+        </MudItem>
+
+        <MudItem xs="12" md="6">
+            <MudCard Elevation="4" Class="pa-6">
+                <MudCardHeader>
+                    <CardHeaderContent>
+                        <div style="display: flex; align-items: center;">
+                            <MudIcon Icon="@Icons.Material.Filled.Public" Class="mr-3" Color="Color.Secondary" />
+                            <MudText Typo="Typo.h6">Search Planets</MudText>
+                        </div>
+                    </CardHeaderContent>
+                </MudCardHeader>
+                <MudCardContent>
+                    <MudTextField @bind-Value="planetSearchTerm"
+                                  @bind-Value:event="oninput"
+                                  Label="Enter planet name"
+                                  Variant="Variant.Outlined"
+                                  Adornment="Adornment.End"
+                                  AdornmentIcon="@Icons.Material.Filled.Search"
+                                  OnAdornmentClick="SearchPlanet"
+                                  OnKeyPress="@(async (KeyboardEventArgs e) => { if (e.Key == "Enter") await SearchPlanet(); })"
+                                  FullWidth="true"
+                                  Class="mb-4" />
+
+                    <MudButton Variant="Variant.Filled"
+                               Color="Color.Secondary"
+                               StartIcon="@Icons.Material.Filled.Search"
+                               OnClick="@(async () => await SearchPlanet())"
+                               FullWidth="true">
+                        <MudText>Search Planet</MudText>
+                    </MudButton>
+                </MudCardContent>
+            </MudCard>
+        </MudItem>
+    </MudGrid>
+
+    <!-- Results Section -->
+    <div class="mt-8">
+        @if (searchedPerson != null)
+        {
+            <MudCard Elevation="6" Class="mb-6">
+                <MudCardHeader>
+                    <CardHeaderContent>
+                        <div style="display: flex; align-items: center;">
+                            <MudAvatar Color="Color.Primary" Size="Size.Large" Class="mr-4">
+                                <MudIcon Icon="@Icons.Material.Filled.Person" />
+                            </MudAvatar>
+                            <div>
+                                <MudText Typo="Typo.h5">@searchedPerson.Name</MudText>
+                                <MudText Typo="Typo.body2" Color="Color.Secondary">Character Profile</MudText>
+                            </div>
+                        </div>
+                    </CardHeaderContent>
+                    <CardHeaderActions>
+                        <MudIconButton Icon="@Icons.Material.Filled.Close"
+                                       Color="Color.Default"
+                                       OnClick="() => searchedPerson = null" />
+                    </CardHeaderActions>
+                </MudCardHeader>
+                <MudCardContent>
+                    <MudGrid>
+                        <MudItem xs="12" sm="6" md="4">
+                            <MudPaper Class="pa-4" Elevation="2">
+                                <div style="display: flex; align-items: center; margin-bottom: 8px;">
+                                    <MudIcon Icon="@Icons.Material.Filled.Height" Class="mr-2" Color="Color.Info" />
+                                    <MudText Typo="Typo.subtitle2">Height</MudText>
+                                </div>
+                                <MudText Typo="Typo.body1">@(string.IsNullOrEmpty(searchedPerson.Height) ? "Unknown" : searchedPerson.Height + " cm")</MudText>
+                            </MudPaper>
+                        </MudItem>
+                        <MudItem xs="12" sm="6" md="4">
+                            <MudPaper Class="pa-4" Elevation="2">
+                                <div style="display: flex; align-items: center; margin-bottom: 8px;">
+                                    <MudIcon Icon="@Icons.Material.Filled.FitnessCenter" Class="mr-2" Color="Color.Warning" />
+                                    <MudText Typo="Typo.subtitle2">Mass</MudText>
+                                </div>
+                                <MudText Typo="Typo.body1">@(string.IsNullOrEmpty(searchedPerson.Mass) ? "Unknown" : searchedPerson.Mass + " kg")</MudText>
+                            </MudPaper>
+                        </MudItem>
+                        <MudItem xs="12" sm="6" md="4">
+                            <MudPaper Class="pa-4" Elevation="2">
+                                <div style="display: flex; align-items: center; margin-bottom: 8px;">
+                                    <MudIcon Icon="@Icons.Material.Filled.Wc" Class="mr-2" Color="Color.Success" />
+                                    <MudText Typo="Typo.subtitle2">Gender</MudText>
+                                </div>
+                                <MudText Typo="Typo.body1">@(string.IsNullOrEmpty(searchedPerson.Gender) ? "Unknown" : char.ToUpper(searchedPerson.Gender[0]) + searchedPerson.Gender.Substring(1))</MudText>
+                            </MudPaper>
+                        </MudItem>
+                        <MudItem xs="12" sm="6" md="4">
+                            <MudPaper Class="pa-4" Elevation="2">
+                                <div style="display: flex; align-items: center; margin-bottom: 8px;">
+                                    <MudIcon Icon="@Icons.Material.Filled.Cake" Class="mr-2" Color="Color.Error" />
+                                    <MudText Typo="Typo.subtitle2">Birth Year</MudText>
+                                </div>
+                                <MudText Typo="Typo.body1">@(string.IsNullOrEmpty(searchedPerson.BirthYear) ? "Unknown" : searchedPerson.BirthYear)</MudText>
+                            </MudPaper>
+                        </MudItem>
+                        <MudItem xs="12" sm="6" md="4">
+                            <MudPaper Class="pa-4" Elevation="2">
+                                <div style="display: flex; align-items: center; margin-bottom: 8px;">
+                                    <MudIcon Icon="@Icons.Material.Filled.RemoveRedEye" Class="mr-2" Color="Color.Tertiary" />
+                                    <MudText Typo="Typo.subtitle2">Eye Color</MudText>
+                                </div>
+                                <MudText Typo="Typo.body1">@(string.IsNullOrEmpty(searchedPerson.EyeColor) ? "Unknown" : char.ToUpper(searchedPerson.EyeColor[0]) + searchedPerson.EyeColor.Substring(1))</MudText>
+                            </MudPaper>
+                        </MudItem>
+                        <MudItem xs="12" sm="6" md="4">
+                            <MudPaper Class="pa-4" Elevation="2">
+                                <div style="display: flex; align-items: center; margin-bottom: 8px;">
+                                    <MudIcon Icon="@Icons.Material.Filled.Home" Class="mr-2" Color="Color.Dark" />
+                                    <MudText Typo="Typo.subtitle2">Homeworld</MudText>
+                                </div>
+                                <MudText Typo="Typo.body1">@(string.IsNullOrEmpty(searchedPerson.Homeworld) ? "Unknown" : "Link Available")</MudText>
+                            </MudPaper>
+                        </MudItem>
+                    </MudGrid>
+                </MudCardContent>
+            </MudCard>
+        }
+
+        @if (searchedPlanet != null)
+        {
+            <MudCard Elevation="6" Class="mb-6">
+                <MudCardHeader>
+                    <CardHeaderContent>
+                        <div style="display: flex; align-items: center;">
+                            <MudAvatar Color="Color.Secondary" Size="Size.Large" Class="mr-4">
+                                <MudIcon Icon="@Icons.Material.Filled.Public" />
+                            </MudAvatar>
+                            <div>
+                                <MudText Typo="Typo.h5">@searchedPlanet.Name</MudText>
+                                <MudText Typo="Typo.body2" Color="Color.Secondary">Planet Information</MudText>
+                            </div>
+                        </div>
+                    </CardHeaderContent>
+                    <CardHeaderActions>
+                        <MudIconButton Icon="@Icons.Material.Filled.Close"
+                                       Color="Color.Default"
+                                       OnClick="() => searchedPlanet = null" />
+                    </CardHeaderActions>
+                </MudCardHeader>
+                <MudCardContent>
+                    <MudGrid>
+                        <MudItem xs="12" sm="6" md="4">
+                            <MudPaper Class="pa-4" Elevation="2">
+                                <div style="display: flex; align-items: center; margin-bottom: 8px;">
+                                    <MudIcon Icon="@Icons.Material.Filled.RotateRight" Class="mr-2" Color="Color.Info" />
+                                    <MudText Typo="Typo.subtitle2">Rotation Period</MudText>
+                                </div>
+                                <MudText Typo="Typo.body1">@(string.IsNullOrEmpty(searchedPlanet.RotationPeriod) ? "Unknown" : searchedPlanet.RotationPeriod + " hours")</MudText>
+                            </MudPaper>
+                        </MudItem>
+                        <MudItem xs="12" sm="6" md="4">
+                            <MudPaper Class="pa-4" Elevation="2">
+                                <div style="display: flex; align-items: center; margin-bottom: 8px;">
+                                    <MudIcon Icon="@Icons.Material.Filled.AccessAlarm" Class="mr-2" Color="Color.Warning" />
+                                    <MudText Typo="Typo.subtitle2">Orbital Period</MudText>
+                                </div>
+                                <MudText Typo="Typo.body1">@(string.IsNullOrEmpty(searchedPlanet.OrbitalPeriod) ? "Unknown" : searchedPlanet.OrbitalPeriod + " days")</MudText>
+                            </MudPaper>
+                        </MudItem>
+                        <MudItem xs="12" sm="6" md="4">
+                            <MudPaper Class="pa-4" Elevation="2">
+                                <div style="display: flex; align-items: center; margin-bottom: 8px;">
+                                    <MudIcon Icon="@Icons.Material.Filled.Straighten" Class="mr-2" Color="Color.Success" />
+                                    <MudText Typo="Typo.subtitle2">Diameter</MudText>
+                                </div>
+                                <MudText Typo="Typo.body1">@(string.IsNullOrEmpty(searchedPlanet.Diameter) ? "Unknown" : searchedPlanet.Diameter + " km")</MudText>
+                            </MudPaper>
+                        </MudItem>
+                        <MudItem xs="12" sm="6" md="4">
+                            <MudPaper Class="pa-4" Elevation="2">
+                                <div style="display: flex; align-items: center; margin-bottom: 8px;">
+                                    <MudIcon Icon="@Icons.Material.Filled.Cloud" Class="mr-2" Color="Color.Error" />
+                                    <MudText Typo="Typo.subtitle2">Climate</MudText>
+                                </div>
+                                <MudText Typo="Typo.body1">@(string.IsNullOrEmpty(searchedPlanet.Climate) ? "Unknown" : char.ToUpper(searchedPlanet.Climate[0]) + searchedPlanet.Climate.Substring(1))</MudText>
+                            </MudPaper>
+                        </MudItem>
+                        <MudItem xs="12" sm="6" md="4">
+                            <MudPaper Class="pa-4" Elevation="2">
+                                <div style="display: flex; align-items: center; margin-bottom: 8px;">
+                                    <MudIcon Icon="@Icons.Material.Filled.Terrain" Class="mr-2" Color="Color.Tertiary" />
+                                    <MudText Typo="Typo.subtitle2">Terrain</MudText>
+                                </div>
+                                <MudText Typo="Typo.body1">@(string.IsNullOrEmpty(searchedPlanet.Terrain) ? "Unknown" : char.ToUpper(searchedPlanet.Terrain[0]) + searchedPlanet.Terrain.Substring(1))</MudText>
+                            </MudPaper>
+                        </MudItem>
+                        <MudItem xs="12" sm="6" md="4">
+                            <MudPaper Class="pa-4" Elevation="2">
+                                <div style="display: flex; align-items: center; margin-bottom: 8px;">
+                                    <MudIcon Icon="@Icons.Material.Filled.People" Class="mr-2" Color="Color.Dark" />
+                                    <MudText Typo="Typo.subtitle2">Population</MudText>
+                                </div>
+                                <MudText Typo="Typo.body1">@(string.IsNullOrEmpty(searchedPlanet.Population) ? "Unknown" : FormatPopulation(searchedPlanet.Population))</MudText>
+                            </MudPaper>
+                        </MudItem>
+                    </MudGrid>
+                </MudCardContent>
+            </MudCard>
+        }
+    </div>
+</MudContainer>
+
+<MudContainer MaxWidth="MaxWidth.Large" Class="mt-4">
+    <MudTable Items="@people" Filter="new Func<Person, bool>(FilterPeople)" InitialDirection="SortDirection.Descending">
+        <PagerContent>
+            <MudTablePager PageSizeOptions="new int[] { 5 }" />
+        </PagerContent>
+        <ToolBarContent>
+            <MudText Typo="Typo.h6">People</MudText>
+            <MudSpacer />
+            <MudTextField @bind-Value="peopleSearchString"
+                          Placeholder="Search people..."
+                          Adornment="Adornment.Start"
+                          AdornmentIcon="Icons.Material.Filled.Search">
+            </MudTextField>
+        </ToolBarContent>
+        <HeaderContent>
+            <MudTh>Name</MudTh>
+            <MudTh SortBy="@((Person p) => p.TimesSearched)">Times searched</MudTh>
+            <MudTh>Height</MudTh>
+            <MudTh>Mass</MudTh>
+            <MudTh>Hair Color</MudTh>
+            <MudTh>Eye Color</MudTh>
+            <MudTh>Birth Year</MudTh>
+            <MudTh>Gender</MudTh>
+            <MudTh>Homeworld</MudTh>
+        </HeaderContent>
+        <RowTemplate>
+            <MudTd>@context.Name</MudTd>
+            <MudTd>@context.TimesSearched</MudTd>
+            <MudTd>@context.Height</MudTd>
+            <MudTd>@context.Mass</MudTd>
+            <MudTd>@context.HairColor</MudTd>
+            <MudTd>@context.EyeColor</MudTd>
+            <MudTd>@context.BirthYear</MudTd>
+            <MudTd>@context.Gender</MudTd>
+            <MudTd>@context.Homeworld</MudTd>
+        </RowTemplate>
+    </MudTable>
+
+    <MudDivider Class="my-8" />
+
+    <MudTable Items="@planets" Filter="new Func<Planet, bool>(FilterPlanets)" InitialDirection="SortDirection.Descending">
+        <PagerContent>
+            <MudTablePager PageSizeOptions="new int[] { 5 }" />
+        </PagerContent>
+        <ToolBarContent>
+            <MudText Typo="Typo.h6">Planets</MudText>
+            <MudSpacer />
+            <MudTextField @bind-Value="planetsSearchString"
+                          Placeholder="Search planets..."
+                          Adornment="Adornment.Start"
+                          AdornmentIcon="Icons.Material.Filled.Search">
+            </MudTextField>
+        </ToolBarContent>
+        <HeaderContent>
+            <MudTh>Name</MudTh>
+            <MudTh SortBy="@((Person p) => p.TimesSearched)">Times searched</MudTh>
+            <MudTh>Rotation Period</MudTh>
+            <MudTh>Orbital Period</MudTh>
+            <MudTh>Diameter</MudTh>
+            <MudTh>Climate</MudTh>
+            <MudTh>Gravity</MudTh>
+            <MudTh>Terrain</MudTh>
+            <MudTh>Surface Water</MudTh>
+            <MudTh>Population</MudTh>
+        </HeaderContent>
+        <RowTemplate>
+            <MudTd>@context.Name</MudTd>
+            <MudTd>@context.TimesSearched</MudTd>
+            <MudTd>@context.RotationPeriod</MudTd>
+            <MudTd>@context.OrbitalPeriod</MudTd>
+            <MudTd>@context.Diameter</MudTd>
+            <MudTd>@context.Climate</MudTd>
+            <MudTd>@context.Gravity</MudTd>
+            <MudTd>@context.Terrain</MudTd>
+            <MudTd>@context.SurfaceWater</MudTd>
+            <MudTd>@context.Population</MudTd>
+        </RowTemplate>
+    </MudTable>
+</MudContainer>
+
+@code {
+    private List<Person> people = new List<Person>();
+    private List<Planet> planets = new List<Planet>();
+
+    private string peopleSearchString = string.Empty;
+    private string planetsSearchString = string.Empty;
+
+    private string personSearchTerm = "Luke Skywalker";
+    private string planetSearchTerm = "Kalee";
+    private bool isSearchingPerson = false;
+    private bool isSearchingPlanet = false;
+
+    private Person? searchedPerson = null;
+    private Planet? searchedPlanet = null;
+
+    protected override async Task OnInitializedAsync()
+    {
+        this.people = await this.StarWarsService.GetPeopleAsync();
+        this.planets = await this.StarWarsService.GetPlanetsAsync();
+    }
+
+    private bool FilterPeople(Person person)
+    {
+        if (string.IsNullOrWhiteSpace(peopleSearchString))
+        {
+            return true;
+        }
+
+        return person.Name.Contains(peopleSearchString, StringComparison.OrdinalIgnoreCase)
+            || person.Homeworld.Contains(peopleSearchString, StringComparison.OrdinalIgnoreCase)
+            || person.Gender.Contains(peopleSearchString, StringComparison.OrdinalIgnoreCase);
+    }
+
+    private bool FilterPlanets(Planet planet)
+    {
+        if (string.IsNullOrWhiteSpace(planetsSearchString))
+        {
+            return true;
+        }
+
+        return planet.Name.Contains(planetsSearchString, StringComparison.OrdinalIgnoreCase)
+            || planet.Climate.Contains(planetsSearchString, StringComparison.OrdinalIgnoreCase)
+            || planet.Terrain.Contains(planetsSearchString, StringComparison.OrdinalIgnoreCase);
+    }
+
+    private async Task SearchPerson()
+    {
+        searchedPerson = await StarWarsService.GetPersonAsync(personSearchTerm);
+
+        var existingPerson = people.FirstOrDefault(p => p.Name.Equals(searchedPerson.Name));
+
+        if (existingPerson != null)
+        {
+            existingPerson.TimesSearched = searchedPerson.TimesSearched;
+        }
+        else
+        {
+            people.Add(searchedPerson);
+        }
+
+        StateHasChanged(); 
+    }
+
+    private async Task SearchPlanet()
+    {
+        searchedPlanet = await StarWarsService.GetPlanetAsync(planetSearchTerm);
+
+        var existingPlanet = planets.FirstOrDefault(p => p.Name.Equals(searchedPlanet.Name));
+
+        if(existingPlanet is not null)
+        {
+            existingPlanet.TimesSearched = searchedPlanet.TimesSearched;
+        } else
+        {
+            planets.Add(searchedPlanet);
+        }
+
+        StateHasChanged();
+    }
+
+    private string FormatPopulation(string population)
+    {
+        if (string.IsNullOrEmpty(population) || population == "unknown") {
+            return "Unknown";
+        }
+
+        if (long.TryParse(population, out long pop))
+        {
+            return pop.ToString("N0");
+        }
+
+        return population;
+    }
+
+}
+

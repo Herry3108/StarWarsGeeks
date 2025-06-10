@@ -4,12 +4,25 @@
     flex-direction: column;
 }
 
+.navbar-custom {
+    background-color: #29465B !important;
+}
+
+.navbar-brand {
+    color: whitesmoke;
+}
+
 main {
     flex: 1;
 }
 
 .sidebar {
     background-image: linear-gradient(180deg, rgb(5, 39, 103) 0%, #3a0647 70%);
+}
+
+.header {
+    display: flex;
+    justify-content: center;
 }
 
 .top-row {
@@ -94,3 +107,4 @@ main {
         right: 0.75rem;
         top: 0.5rem;
     }
+

@@ -18,8 +18,17 @@ public class PlanetRepository : IPlanetRepository
         return await starWarsDbContext.Planets.ToListAsync();
     }
 
-    public Task<Planet?> GetPlanetByName(string name)
+    public async Task<Planet?> GetPlanetByName(string name)
     {
-        return starWarsDbContext.Planets.FirstOrDefaultAsync(x => x.Name == name);
+        Planet? result = await starWarsDbContext.Planets.FirstOrDefaultAsync(x => x.Name == name);
+        if (result is null)
+        {
+            return result;
+        }
+
+        result.TimesSearched = result.TimesSearched + 1;
+        await starWarsDbContext.SaveChangesAsync();
+
+        return result;
     }
 }
