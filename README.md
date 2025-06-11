@@ -5,22 +5,22 @@ Die Webapplikation wird in zwei Bestandteile getrennt, Frontend und Backend, die
  
 # Gliederung
 1. Einleitung
-	Anforderungen und Projektziel
-	Methodik
+	- Anforderungen und Projektziel
+	- Methodik
 2. Projektplanung
-	Agiles Vorgehen mit Scrum: Prinzipien und Rollen
-	Projektteam
-	Anforderungsanalyse
-	Erstellung der User Stories und des Backlogs
+	- Agiles Vorgehen mit Scrum: Prinzipien und Rollen
+	- Projektteam
+	- Anforderungsanalyse
+	- Erstellung der User Stories und des Backlogs
 3. Sprints
 	- Sprint 1:
-		Sprint Planning 
-		Entwicklung Backend in ASP.NET Core mit Unit-Tests in xUnit
-		Sprint Review & Retrospektive
+		- Sprint Planning 
+		- Entwicklung Backend in ASP.NET Core mit Unit-Tests in xUnit
+		- Sprint Review & Retrospektive
 	- Sprint 2:
-		Sprint Planning
-		Entwicklung Frontend in Blazor mit GUI-Testing anhand manueller Tests
-		Sprint Review & Retrospektive
+		- Sprint Planning
+		- Entwicklung Frontend in Blazor mit GUI-Testing anhand manueller Tests
+		- Sprint Review & Retrospektive
 4. Fazit und Ausblick
-	„Lessons Learned“-Sitzung 
-	Ausblick für zukünftige Optimierungen und Erweiterung
+	- „Lessons Learned“-Sitzung 
+	- Ausblick für zukünftige Optimierungen und Erweiterung
