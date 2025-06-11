@@ -28,8 +28,7 @@
                     </CardHeaderContent>
                 </MudCardHeader>
                 <MudCardContent>
-                    <MudTextField @bind-Value="personSearchTerm"
-                                  @bind-Value:event="oninput"
+                    <MudTextField @bind-Value="peopleSearchString"
                                   Label="Enter person name"
                                   Variant="Variant.Outlined"
                                   Adornment="Adornment.End"
@@ -61,8 +60,7 @@
                     </CardHeaderContent>
                 </MudCardHeader>
                 <MudCardContent>
-                    <MudTextField @bind-Value="planetSearchTerm"
-                                  @bind-Value:event="oninput"
+                    <MudTextField @bind-Value="planetsSearchString"
                                   Label="Enter planet name"
                                   Variant="Variant.Outlined"
                                   Adornment="Adornment.End"
@@ -260,7 +258,7 @@
         <ToolBarContent>
             <MudText Typo="Typo.h6">People</MudText>
             <MudSpacer />
-            <MudTextField @bind-Value="peopleSearchString"
+            <MudTextField @bind-Value="personSearchTerm"
                           Placeholder="Search people..."
                           Adornment="Adornment.Start"
                           AdornmentIcon="Icons.Material.Filled.Search">
@@ -299,7 +297,7 @@
         <ToolBarContent>
             <MudText Typo="Typo.h6">Planets</MudText>
             <MudSpacer />
-            <MudTextField @bind-Value="planetsSearchString"
+            <MudTextField @bind-Value="planetSearchTerm"
                           Placeholder="Search planets..."
                           Adornment="Adornment.Start"
                           AdornmentIcon="Icons.Material.Filled.Search">
@@ -336,11 +334,12 @@
     private List<Person> people = new List<Person>();
     private List<Planet> planets = new List<Planet>();
 
-    private string peopleSearchString = string.Empty;
-    private string planetsSearchString = string.Empty;
+    private string peopleSearchString = "Luke Skywalker";
+    private string planetsSearchString = "Kalee";
 
-    private string personSearchTerm = "Luke Skywalker";
-    private string planetSearchTerm = "Kalee";
+    private string personSearchTerm = string.Empty;
+    private string planetSearchTerm = string.Empty;
+
     private bool isSearchingPerson = false;
     private bool isSearchingPlanet = false;
 
@@ -355,34 +354,38 @@
 
     private bool FilterPeople(Person person)
     {
-        if (string.IsNullOrWhiteSpace(peopleSearchString))
+        if (string.IsNullOrWhiteSpace(personSearchTerm))
         {
             return true;
         }
 
-        return person.Name.Contains(peopleSearchString, StringComparison.OrdinalIgnoreCase)
-            || person.Homeworld.Contains(peopleSearchString, StringComparison.OrdinalIgnoreCase)
-            || person.Gender.Contains(peopleSearchString, StringComparison.OrdinalIgnoreCase);
+        return person.Name.Contains(personSearchTerm, StringComparison.OrdinalIgnoreCase)
+            || person.Homeworld.Contains(personSearchTerm, StringComparison.OrdinalIgnoreCase)
+            || person.Gender.Contains(personSearchTerm, StringComparison.OrdinalIgnoreCase);
     }
 
     private bool FilterPlanets(Planet planet)
     {
-        if (string.IsNullOrWhiteSpace(planetsSearchString))
+        if (string.IsNullOrWhiteSpace(planetSearchTerm))
         {
             return true;
         }
 
-        return planet.Name.Contains(planetsSearchString, StringComparison.OrdinalIgnoreCase)
-            || planet.Climate.Contains(planetsSearchString, StringComparison.OrdinalIgnoreCase)
-            || planet.Terrain.Contains(planetsSearchString, StringComparison.OrdinalIgnoreCase);
+        return planet.Name.Contains(planetSearchTerm, StringComparison.OrdinalIgnoreCase)
+            || planet.Climate.Contains(planetSearchTerm, StringComparison.OrdinalIgnoreCase)
+            || planet.Terrain.Contains(planetSearchTerm, StringComparison.OrdinalIgnoreCase);
     }
 
     private async Task SearchPerson()
     {
-        searchedPerson = await StarWarsService.GetPersonAsync(personSearchTerm);
+        if(string.IsNullOrEmpty(peopleSearchString))
+        {
+            return;
+        }
+
+        searchedPerson = await StarWarsService.GetPersonAsync(peopleSearchString);
 
         var existingPerson = people.FirstOrDefault(p => p.Name.Equals(searchedPerson.Name));
-
         if (existingPerson != null)
         {
             existingPerson.TimesSearched = searchedPerson.TimesSearched;
@@ -392,23 +395,30 @@
             people.Add(searchedPerson);
         }
 
-        StateHasChanged(); 
+        people = people.OrderByDescending(p => p.TimesSearched).ToList();
+        StateHasChanged();
     }
 
     private async Task SearchPlanet()
     {
-        searchedPlanet = await StarWarsService.GetPlanetAsync(planetSearchTerm);
+        if (string.IsNullOrEmpty(planetsSearchString))
+        {
+            return;
+        }
+
+        searchedPlanet = await StarWarsService.GetPlanetAsync(planetsSearchString);
 
         var existingPlanet = planets.FirstOrDefault(p => p.Name.Equals(searchedPlanet.Name));
-
-        if(existingPlanet is not null)
+        if (existingPlanet is not null)
         {
             existingPlanet.TimesSearched = searchedPlanet.TimesSearched;
-        } else
+        }
+        else
         {
             planets.Add(searchedPlanet);
         }
 
+        planets = planets.OrderByDescending(p => p.TimesSearched).ToList();
         StateHasChanged();
     }
 
