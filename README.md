@@ -19,7 +19,7 @@ Die Webapplikation wird in zwei Bestandteile getrennt, Frontend und Backend, die
 		Sprint Review & Retrospektive
 	- Sprint 2:
 		Sprint Planning
-		Entwicklung Frontend in Blazor mit GUI-Testing anhand Selenium
+		Entwicklung Frontend in Blazor mit GUI-Testing anhand manueller Tests
 		Sprint Review & Retrospektive
 4. Fazit und Ausblick
 	„Lessons Learned“-Sitzung 
