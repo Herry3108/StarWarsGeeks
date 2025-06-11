@@ -1,19 +1,34 @@
+using MudBlazor.Services;
 using StarWarsGeeks.UI.Components;
+using StarWarsGeeks.UI.Service;
 
-var builder = WebApplication.CreateBuilder(args);
+WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
-var app = builder.Build();
+
+builder.Services.AddHttpClient("StarWarsClient",
+    client =>
+    {
+        client.BaseAddress = new Uri("https://localhost:7120/api/StarWars/");
+        client.DefaultRequestHeaders.Add("Accept", "application/json");
+    });
+
+// Add MudBlazor services
+builder.Services.AddMudServices();
+
+builder.Services.AddScoped<StarWarsService>();
+
+WebApplication app = builder.Build();
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
-    app.UseExceptionHandler("/Error", createScopeForErrors: true);
+    _ = app.UseExceptionHandler("/Error", createScopeForErrors: true);
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-    app.UseHsts();
+    _ = app.UseHsts();
 }
 
 app.UseHttpsRedirection();

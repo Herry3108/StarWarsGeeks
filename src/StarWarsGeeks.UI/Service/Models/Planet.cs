@@ -1,16 +1,16 @@
 ﻿using Newtonsoft.Json;
 
-namespace StarWarsGeeks.Business.Models;
+namespace StarWarsGeeks.UI.Service.Models;
 
 public class Planet
 {
     [JsonProperty("name")]
     public string Name { get; set; } = string.Empty;
 
-    [JsonProperty("rotation_period")]
+    [JsonProperty("rotationPeriod")]
     public string RotationPeriod { get; set; } = string.Empty;
 
-    [JsonProperty("orbital_period")]
+    [JsonProperty("orbitalPeriod")]
     public string OrbitalPeriod { get; set; } = string.Empty;
 
     [JsonProperty("diameter")]
@@ -25,11 +25,12 @@ public class Planet
     [JsonProperty("terrain")]
     public string Terrain { get; set; } = string.Empty;
 
-    [JsonProperty("surface_water")]
+    [JsonProperty("surfaceWater")]
     public string SurfaceWater { get; set; } = string.Empty;
 
     [JsonProperty("population")]
     public string Population { get; set; } = string.Empty;
-    [JsonIgnore]
-    public int TimesSearched { get; set; } = 0;
+
+    [JsonProperty("timesSearched")]
+    public int TimesSearched;
 }

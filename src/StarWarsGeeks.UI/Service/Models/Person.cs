@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace StarWarsGeeks.Business.Models;
+namespace StarWarsGeeks.UI.Service.Models;
 
 public class Person
 {
@@ -13,16 +13,16 @@ public class Person
     [JsonProperty("mass")]
     public string Mass { get; set; } = string.Empty;
 
-    [JsonProperty("hair_color")]
+    [JsonProperty("hairColor")]
     public string HairColor { get; set; } = string.Empty;
 
-    [JsonProperty("skin_color")]
+    [JsonProperty("skinColor")]
     public string SkinColor { get; set; } = string.Empty;
 
-    [JsonProperty("eye_color")]
+    [JsonProperty("eyeColor")]
     public string EyeColor { get; set; } = string.Empty;
 
-    [JsonProperty("birth_year")]
+    [JsonProperty("birthYear")]
     public string BirthYear { get; set; } = string.Empty;
 
     [JsonProperty("gender")]
@@ -31,6 +31,7 @@ public class Person
     [JsonProperty("homeworld")]
     public string Homeworld { get; set; } = string.Empty;
 
-    [JsonIgnore]
-    public int TimesSearched { get; set; } = 0;
+    [JsonProperty("timesSearched")]
+    public int TimesSearched;
+
 }
