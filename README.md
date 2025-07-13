@@ -5,22 +5,22 @@ Die Webapplikation wird in zwei Bestandteile getrennt, Frontend und Backend, die
  
 # Gliederung
 1. Einleitung
-	- Anforderungen und Projektziel
-	- Methodik
-2. Projektplanung
-	- Agiles Vorgehen mit Scrum: Prinzipien und Rollen
-	- Projektteam
+	- Vorstellung Star Wars Geeks
+ 	- Projektziel und Vorgehen 	
 	- Anforderungsanalyse
+2. Projektplanung
+	- Agiles Vorgehen: Vergleich von Scrum und Kanban
+	- Projektteam
 	- Erstellung der User Stories und des Backlogs
-3. Sprints
-	- Sprint 1:
-		- Sprint Planning 
-		- Entwicklung Backend in ASP.NET Core mit Unit-Tests in xUnit
-		- Sprint Review & Retrospektive
-	- Sprint 2:
-		- Sprint Planning
-		- Entwicklung Frontend in Blazor mit GUI-Testing anhand manueller Tests
-		- Sprint Review & Retrospektive
+3. Erster Sprints   
+	- Sprint Planning 
+	- Entwicklung Backend in ASP.NET Core mit Unit-Tests in xUnit
+	- Sprint Review & Retrospektive
+4. Zweiter Sprint:
+	- Sprint Planning
+	- Entwicklung Frontend in Blazor mit GUI-Testing anhand manueller Tests
+	- Sprint Review & Retrospektive
 4. Fazit und Ausblick
+       	- Zielerreichung und Ergebnisbewertung 	
 	- „Lessons Learned“-Sitzung 
 	- Ausblick für zukünftige Optimierungen und Erweiterung
