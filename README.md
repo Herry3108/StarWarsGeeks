@@ -5,7 +5,7 @@ Die Webapplikation wird in zwei Bestandteile getrennt, Frontend und Backend, die
  
 # Gliederung
 1. Einleitung
-	- Vorstellung Star Wars Geeks
+	- Vorstellung Star Wars Geeks e. V.
  	- Projektziel und Vorgehen 	
 	- Anforderungsanalyse
 2. Projektplanung
